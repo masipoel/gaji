@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Gaji ASN (Diperbaiki)</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f5f7fa; margin: 0; padding: 40px; }
+    .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h1, h2 { text-align: center; }
+    form input, form select, form button { display: block; width: 100%; margin-bottom: 10px; padding: 10px; font-size: 16px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    table th, table td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    table th { background-color: #f0f0f0; }
+    table button { margin-right: 5px; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
+    table button:nth-child(1) { background-color: #2196F3; color: white; }
+    table button:nth-child(2) { background-color: #f44336; color: white; }
+    .form-row { display: flex; gap: 10px; justify-content: space-between; }
+    .form-row input { width: 48%; }
+  </style>
+
+  <style>
+    @media print {
+  th:nth-child(12),
+  td:nth-child(12),
+  td:nth-child(12) button {
+    display: none !important;
+  }
+  .ttd-section {
+    visibility: visible;
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    width: 100%;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .container h1,
+  .container h2,
+  #tabelGaji, #tabelGaji * {
+    visibility: visible;
+  }
+  #tabelGaji {
+    position: absolute;
+    left: 0;
+    top: 100px;
+    width: 100%;
+  }
+}
+    }
+  </style>
+
+<style>
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+    }
+
+    .container {
+      padding: 15px;
+    }
+
+    form input,
+    form select,
+    form button {
+      font-size: 14px;
+    }
+
+    .form-row {
+      flex-direction: column;
+    }
+
+    .form-row input {
+      width: 100%;
+    }
+
+    table th, table td {
+      font-size: 12px;
+      padding: 6px;
+    }
+
+    table button {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .ttd-section {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .ttd-section > div {
+      width: 100%;
+    }
+  }
+</style>
+
+</head>
+
+<body>
+<div class="container">
+  <h1>DAFTAR GAJI ASN</h1>
+  <h2>Input Data Pegawai</h2>
+  <form id="formPegawai">
+    <input id="nama" autocomplete="off" placeholder="Nama" required type="text"/>
+    <input id="nomorRekening" autocomplete="off" placeholder="Nomor Rekening Bank" required type="text"/>
+    <select id="golongan" required><option value="">Pilih Golongan</option>
+<option value="I/a">I/a</option>
+<option value="I/b">I/b</option>
+<option value="I/c">I/c</option>
+<option value="I/d">I/d</option>
+<option value="II/a">II/a</option>
+<option value="II/b">II/b</option>
+<option value="II/c">II/c</option>
+<option value="II/d">II/d</option>
+<option value="III/a">III/a</option>
+<option value="III/b">III/b</option>
+<option value="III/c">III/c</option>
+<option value="III/d">III/d</option>
+<option value="IV/a">IV/a</option>
+<option value="IV/b">IV/b</option>
+<option value="IV/c">IV/c</option>
+<option value="IV/d">IV/d</option>
+<option value="IV/e">IV/e</option>
+</select>
+    <select id="unitKerja" required>
+<option value="">Pilih Unit Kerja</option>
+<option value="Dinas Kesehatan">Dinas Kesehatan</option>
+<option value="Puskesmas Amban">Puskesmas Amban</option>
+<option value="Puskesmas Sanggeng">Puskesmas Sanggeng</option>
+<option value="Puskesmas Wosi">Puskesmas Wosi</option>
+<option value="Puskesmas Maripi">Puskesmas Maripi</option>
+<option value="Puskesmas Prafi">Puskesmas Prafi</option>
+<option value="Puskesmas Warmare">Puskesmas Warmare</option>
+<option value="Puskesmas Masni">Puskesmas Masni</option>
+<option value="Puskesmas Sidey">Puskesmas Sidey</option>
+<option value="Puskesmas Tanah Merah">Puskesmas Tanah Merah</option>
+<option value="Puskesmas Udopi">Puskesmas Udopi</option>
+<option value="Puskesmas Aimasi">Puskesmas Aimasi</option>
+<option value="Puskesmas Oransbari">Puskesmas Oransbari</option>
+<option value="Puskesmas Dataran Isim">Puskesmas Dataran Isim</option>
+<option value="Puskesmas Manokwari Timur">Puskesmas Manokwari Timur</option>
+</select>
+    <input id="gaji" autocomplete="off" placeholder="Gaji Dibayarkan" required type="text"/>
+    <div class="form-row">
+      <input id="beras" autocomplete="off" placeholder="Jatah Beras (kg)" required type="number"/>
+      <input disabled id="potonganAngkut" placeholder="Potongan Angkut Beras" type="text"/>
+    </div>
+    <div id="multiPotonganContainer" style="margin-bottom: 10px;">
+      <label>Potongan Kredit dan Bank:</label>
+      <div id="potonganList"></div>
+      <button onclick="tambahPotonganField()" type="button">+ Tambah Potongan Kredit</button>
+    </div>
+    <button type="submit">Simpan</button>
+  </form>
+
+  <h2>Daftar Gaji</h2>
+
+<label for="filterUnitKerja"><strong>Filter Unit Kerja:</strong></label>
+<select id="filterUnitKerja" autocomplete="off">
+  <option value="">-- Semua Unit Kerja --</option>
+</select>
+
+  <table id="tabelGaji">
+    <thead>
+      <tr>
+        <th>No</th><th>Nama</th><th>Nomor Rekening Bank</th><th>Golongan</th>
+        <th>Unit Kerja</th><th>Gaji Dibayarkan</th><th>Beras (kg)</th><th>Potongan Angkut Beras</th>
+        <th>Potongan Kredit</th><th>Total Potongan</th><th>Gaji Bersih Diterima</th>
+<th>Aksi</th><th>Paraf/Ttd</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button onclick="window.print()">Cetak</button>
+  <button onclick="backupDatabase()">Backup Database</button>
+  <input type="file" id="restoreInput" accept=".json" style="display: none;" onchange="restoreDatabase(event)">
+  <button onclick="document.getElementById('restoreInput').click()">Restore Database</button>
+
+<div class="ttd-section" style="margin-top: 80px; display: flex; justify-content: space-between;">
+  <div style="text-align: center; width: 50%;">
+    Mengetahui,<br/>
+    Kepala Dinas Kesehatan<br/><br/><br/><br/>
+    ___________________
+  </div>
+  <div style="text-align: center; width: 50%;">
+    Manokwari, ......................<br/>
+    Bendahara<br/><br/><br/><br/>
+    ___________________
+  </div>
+</div>
+
+</div>
+
+<script>
+  function formatRupiah(angka, prefix) {
+    let number_string = angka.replace(/[^\d,]/g, '');
+    let split = number_string.split(',');
+    let sisa = split[0].length % 3;
+    let rupiah = split[0].substr(0, sisa);
+    let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    if (ribuan) {
+      let separator = sisa ? '.' : '';
+      rupiah += separator + ribuan.join('.');
+    }
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+  }
+
+  document.getElementById("gaji").addEventListener("input", function () {
+    let gaji = this.value.replace(/[^\d]/g, '');
+    this.value = formatRupiah(gaji, 'Rp. ');
+  });
+
+  document.getElementById("beras").addEventListener("input", function () {
+    const berasKg = parseFloat(this.value) || 0;
+    const potongan = berasKg * 1000;
+    document.getElementById("potonganAngkut").value = formatRupiah(potongan.toString(), 'Rp. ');
+  });
+
+  function tambahPotonganField() {
+    const list = document.getElementById("potonganList");
+    const div = document.createElement("div");
+    div.style.marginBottom = "5px";
+    div.innerHTML = `
+      <input type="text" placeholder="Nominal" class="potonganInput" style="width:40%; display:inline-block;" />
+      <select class="bankInput" style="width:40%; display:inline-block; margin-right: 5px;">
+        <option value="">Pilih Bank</option>
+        <option value="Bank Papua">Bank Papua</option><option value="Mandiri">Mandiri</option>
+        <option value="BRI">BRI</option><option value="Modern Papua">Modern Papua</option>
+        <option value="BNI">BNI</option><option value="BTN">BTN</option>
+      </select>
+      <button type="button" onclick="this.parentElement.remove()">Hapus</button>`;
+    list.appendChild(div);
+    div.querySelector(".potonganInput").addEventListener("input", function () {
+      let nominal = this.value.replace(/[^\d]/g, '');
+      this.value = "Rp. " + formatRupiah(nominal);
+    });
+  }
+
+  function ambilPotonganGabungan() {
+    const potonganEls = document.querySelectorAll(".potonganInput");
+    const bankEls = document.querySelectorAll(".bankInput");
+    let hasil = [];
+    for (let i = 0; i < potonganEls.length; i++) {
+      let nominal = potonganEls[i].value.replace(/[^\d]/g, '');
+      let bank = bankEls[i].value;
+      if (nominal && bank) {
+        hasil.push("Rp. " + formatRupiah(nominal) + " (" + bank + ")");
+      }
+    }
+    return hasil.join("<br>");
+  }
+
+  let dataPegawai = JSON.parse(localStorage.getItem("dataPegawai")) || [];
+  let indexEdit = null;
+
+  function renderTable() {
+
+    // Populate filter dropdown
+    const unitKerjaDropdown = document.getElementById("filterUnitKerja");
+  const selectedBefore = unitKerjaDropdown.value;
+  unitKerjaDropdown.innerHTML = `<option value="">-- Semua Unit Kerja --</option>`;
+const uniqueUnits = [...new Set(dataPegawai.map(d => d.unitKerja))];
+    uniqueUnits.forEach(unit => {
+      if (!unit) return;
+  const opt = document.createElement("option");
+      opt.value = unit;
+      opt.textContent = unit;
+      unitKerjaDropdown.appendChild(opt);
+  if (opt.value === selectedBefore) {
+    opt.selected = true;
+  }
+    });
+
+    // Get selected unit for filter
+    const selectedUnit = document.getElementById("filterUnitKerja").value;
+
+    const tbody = document.querySelector("#tabelGaji tbody");
+    tbody.innerHTML = "";
+    dataPegawai.forEach((data, index) => {
+    if (selectedUnit && data.unitKerja !== selectedUnit) return;
+      const potonganKreditTotal = (data.potonganKredit.match(/Rp\. ?([\d.]+)/g) || [])
+        .reduce((sum, val) => sum + parseInt(val.replace(/[^\d]/g, '')), 0);
+      const total = parseInt(data.gaji) - parseInt(data.potonganAngkut.replace(/[^\d]/g, '')) - potonganKreditTotal;
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${data.nama}</td>
+        <td>${data.nomorRekening}</td>
+        <td>${data.golongan}</td>
+        <td>${data.unitKerja}</td>
+        <td>Rp. ${formatRupiah(data.gaji, '')}</td>
+        <td>${data.beras}</td>
+        <td>${data.potonganAngkut}</td>
+        <td>${data.potonganKredit}</td><td>Rp. ${formatRupiah((potonganKreditTotal + parseInt(data.potonganAngkut.replace(/[^\d]/g, ''))).toString())}</td>
+        <td>Rp. ${formatRupiah(total.toString())}</td>
+        <td>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:5px;">
+        <button onclick="editData(${index})">Edit</button>
+        <button onclick="hapusData(${index})">Hapus</button>
+      </div>
+    </td><td style='height: 50px;'></td>`;
+      tbody.appendChild(row);
+    });
+    localStorage.setItem("dataPegawai", JSON.stringify(dataPegawai));
+  }
+
+  function editData(index) {
+    const data = dataPegawai[index];
+    document.getElementById("nama").value = data.nama;
+    document.getElementById("nomorRekening").value = data.nomorRekening;
+    document.getElementById("golongan").value = data.golongan;
+    document.getElementById("unitKerja").value = data.unitKerja;
+    document.getElementById("gaji").value = formatRupiah(data.gaji, 'Rp. ');
+    document.getElementById("beras").value = data.beras;
+    document.getElementById("potonganAngkut").value = data.potonganAngkut;
+    indexEdit = index;
+  }
+
+  function hapusData(index) {
+    if (confirm("Yakin ingin menghapus data ini?")) {
+      dataPegawai.splice(index, 1);
+      renderTable();
+    }
+  }
+
+  document.getElementById("formPegawai").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const data = {
+      nama: document.getElementById("nama").value,
+      nomorRekening: document.getElementById("nomorRekening").value,
+      golongan: document.getElementById("golongan").value,
+      unitKerja: document.getElementById("unitKerja").value,
+      gaji: document.getElementById("gaji").value.replace(/[^\d]/g, ''),
+      beras: document.getElementById("beras").value,
+      potonganAngkut: document.getElementById("potonganAngkut").value,
+      potonganKredit: ambilPotonganGabungan()
+    };
+    if (indexEdit !== null) {
+      dataPegawai[indexEdit] = data;
+      indexEdit = null;
+    } else {
+      dataPegawai.push(data);
+    }
+    this.reset();
+    document.getElementById("potonganList").innerHTML = "";
+    renderTable();
+  });
+
+  
+document.getElementById("filterUnitKerja").addEventListener("change", renderTable);
+document.getElementById("filterUnitKerja").addEventListener("change", renderTable);
+document.addEventListener("DOMContentLoaded", renderTable);
+
+
+  function backupDatabase() {
+    const data = localStorage.getItem("dataPegawai");
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    link.download = "backup_dataPegawai_" + timestamp + ".json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  function restoreDatabase(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (!Array.isArray(data)) throw new Error("Format data tidak valid");
+        localStorage.setItem("dataPegawai", JSON.stringify(data));
+        dataPegawai = data;
+        renderTable();
+        alert("Database berhasil direstore!");
+      } catch (err) {
+        alert("Gagal restore database: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+</script>
+</body>
+</html>
